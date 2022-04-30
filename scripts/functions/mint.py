@@ -1,6 +1,7 @@
 from web3 import Web3
 import json,os,pathlib
 from web3.middleware import geth_poa_middleware
+from functions.uploadMetadata import makeMetaData
 
 def Mint():
     print("Nice so we will be seeing another NFT class!")
@@ -15,8 +16,10 @@ def Mint():
     w3 = Web3(Web3.HTTPProvider(config["URL"]["ropsten"]))
     w3.middleware_onion.inject(geth_poa_middleware, layer=0)
 
-    tokenName = str(input("Enter the name of token class"))
-    totalSupply = int(input("Enter supply"))
+    tokenName = str(input("Enter the name of token class: "))
+    totalSupply = int(input("Enter supply: "))
+    discription = str(input("Enter token discription: "))
+    image = str(input("Enter image URL: "))
 
     Private_key = os.getenv("PRIVATE_KEY")
     acc = w3.eth.account.privateKeyToAccount('485d182a600718da0c56756f808367a1faf223d48b4a9386bace972da8df53d7')
@@ -36,8 +39,10 @@ def Mint():
         abi = abi["abi"]
 
     contract = w3.eth.contract(config["contract_addr"], abi=abi)
+
+    makeMetaData(tokenName, discription, image, contract.caller.currentTokenCount())
     
-    tx = contract.functions.mintClass(client_data["public_address"],"Bullets",1000).buildTransaction(tx_dict)
+    tx = contract.functions.mintClass(client_data["public_address"],tokenName,totalSupply).buildTransaction(tx_dict)
     sign_tx = w3.eth.account.sign_transaction(tx,private_key=Private_key)
     tx_id = w3.eth.send_raw_transaction(sign_tx.rawTransaction)
     i = w3.eth.wait_for_transaction_receipt(tx_id)
@@ -49,3 +54,4 @@ def Mint():
         sample['totalSupply'] = totalSupply
         sample['ID'] = contract.caller.getCurrentTokenCount() - 1
         sample['owner'] = client_data['public_address']
+        json.dump(sample, file)

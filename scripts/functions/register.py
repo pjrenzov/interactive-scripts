@@ -48,7 +48,7 @@ def Register():
         #'gas':100000,
     }
 
-    tx = contract.functions.registerAsClient(1).buildTransaction(tx_dict)
+    tx = contract.functions.registerAsClient(contract.caller.currentClientCount()).buildTransaction(tx_dict)
     sign_tx = w3.eth.account.sign_transaction(tx,private_key=user_private_key)
     tx_hash = w3.eth.send_raw_transaction(sign_tx.rawTransaction)
     i = w3.eth.wait_for_transaction_receipt(tx_hash)
