@@ -40,18 +40,20 @@ def Mint():
 
     contract = w3.eth.contract(config["contract_addr"], abi=abi)
 
-    makeMetaData(tokenName, discription, image, contract.caller.currentTokenCount())
+    makeMetaData(tokenName, discription, image, str(contract.caller.currentTokenCount()))
     
-    tx = contract.functions.mintClass(client_data["public_address"],tokenName,totalSupply).buildTransaction(tx_dict)
-    sign_tx = w3.eth.account.sign_transaction(tx,private_key=Private_key)
+    tx = contract.functions.mintClass(w3.toChecksumAddress(client_data["public_address"]),totalSupply,tokenName).buildTransaction(tx_dict)
+    sign_tx = w3.eth.account.sign_transaction(tx,private_key=acc.key)
     tx_id = w3.eth.send_raw_transaction(sign_tx.rawTransaction)
     i = w3.eth.wait_for_transaction_receipt(tx_id)
 
     with open(f"data/Tokens/sample.json","w") as file:
-        sample = json.load(file)
+        sample = json.load(file.read())
     with open(f"data/Tokens/{tokenName}.json", "w") as file:
         sample['name'] = tokenName
         sample['totalSupply'] = totalSupply
         sample['ID'] = contract.caller.getCurrentTokenCount() - 1
         sample['owner'] = client_data['public_address']
         json.dump(sample, file)
+
+    return
