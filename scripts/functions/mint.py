@@ -47,13 +47,16 @@ def Mint():
     tx_id = w3.eth.send_raw_transaction(sign_tx.rawTransaction)
     i = w3.eth.wait_for_transaction_receipt(tx_id)
 
-    with open(f"data/Tokens/sample.json","w") as file:
-        sample = json.load(file.read())
+    with open(f"data/Tokens/sample.json") as file:
+        sample = json.load(file)
     with open(f"data/Tokens/{tokenName}.json", "w") as file:
         sample['name'] = tokenName
         sample['totalSupply'] = totalSupply
         sample['ID'] = contract.caller.getCurrentTokenCount() - 1
         sample['owner'] = client_data['public_address']
         json.dump(sample, file)
-
+    with open(f"data/Clients/{username}.json", "a") as file:
+        client_data = json.load(file)
+        client_data["tokens"][tokenName] = contract.caller.getCurrentTokenCount() - 1
+        json.dump(client_data, file)
     return
