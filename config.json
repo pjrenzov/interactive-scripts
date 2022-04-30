@@ -1,0 +1,8 @@
+{
+    "URL" : {
+        "polygon-test" : "https://polygon-mumbai.infura.io/v3/6e58cec88b6a447fb7d77bdf95a501ba",
+        "local-GUI" : "http://127.0.0.1:8545",
+        "ropsten" : "https://ropsten.infura.io/v3/6e58cec88b6a447fb7d77bdf95a501ba" 
+    },
+    "contract_addr":  "0x6c2AD486F39C185f70efC5C05B3b4Df0E42307C0" 
+}
