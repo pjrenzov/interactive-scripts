@@ -61,7 +61,7 @@ def used(account, tokenName, amount):
         abi = json.load(file)
         abi = abi["abi"]
 
-    with open(f"data/Tokens/{tokenName}.json", "w") as file:
+    with open(f"data/Tokens/{tokenName}.json") as file:
         destination = w3.toChecksumAddress(json.load(file)["owner"])
 
     contract = w3.eth.contract(config["contract_addr"], abi=abi)
