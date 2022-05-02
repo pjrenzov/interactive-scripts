@@ -21,7 +21,7 @@ def main():
         if check(acc, "GoldBonus") == False:
             print("You do not have gold bonus")
             return
-        tranfer(acc,"0x6970A5a3a188D176BB2AE6bb7CE1b4bdD40bfacA", 10, "Gold")
+        tranfer("0x6970A5a3a188D176BB2AE6bb7CE1b4bdD40bfacA",acc, 10, "Gold")
         used(acc, "GoldBonus", 1)
         print("Bonus used. Wait for 20 mins to see changes")
 

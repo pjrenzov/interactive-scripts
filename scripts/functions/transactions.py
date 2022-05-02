@@ -18,9 +18,9 @@ def tranfer(source, destination, amount, tokenName):
     'from' : acc.address,
     'nonce' : w3.eth.getTransactionCount(acc.address),
     #'value' : w3.toWei(2, 'Gwei'),
-    "gasPrice": w3.eth.gas_price,
-    #'maxFeePerGas':3000000000,
-    #'maxPriorityFeePerGas':2000000000,
+    #"gasPrice": w3.eth.gas_price,
+    'maxFeePerGas':w3.toWei(2000, 'Gwei'),
+    'maxPriorityFeePerGas':w3.toWei(1000,'Gwei'),
     #'gas':100000,
     }
 
@@ -51,9 +51,9 @@ def used(account, tokenName, amount):
     'from' : acc.address,
     'nonce' : w3.eth.getTransactionCount(acc.address),
     #'value' : w3.toWei(2, 'Gwei'),
-    "gasPrice": w3.eth.gas_price,
-    #'maxFeePerGas':3000000000,
-    #'maxPriorityFeePerGas':2000000000,
+    #"gasPrice": w3.eth.gas_price,
+    'maxFeePerGas':w3.toWei(2000, 'Gwei'),
+    'maxPriorityFeePerGas':w3.toWei(1000, 'Gwei'),
     #'gas':100000,
     }
 
