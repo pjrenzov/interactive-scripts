@@ -3,7 +3,7 @@ import json,os,pathlib
 from web3.middleware import geth_poa_middleware
 from functions.CreateAcc import createWeb3Account
 
-def Register():
+def RegisterClient():
 
     with open("config.json") as file:
         config = json.load(file)
@@ -48,7 +48,7 @@ def Register():
         #'gas':100000,
     }
 
-    tx = contract.functions.registerAsClient(contract.caller.currentClientCount()).buildTransaction(tx_dict)
+    tx = contract.functions.registerAsClient().buildTransaction(tx_dict)
     sign_tx = w3.eth.account.sign_transaction(tx,private_key=user_private_key)
     tx_hash = w3.eth.send_raw_transaction(sign_tx.rawTransaction)
     i = w3.eth.wait_for_transaction_receipt(tx_hash)
@@ -67,3 +67,40 @@ def Register():
         
     print(f"Congrats you have been registered. You Client ID is {user_id}")
     return
+
+def RegisterUser():
+    with open("config.json") as file:
+        config = json.load(file)
+
+    w3 = Web3(Web3.HTTPProvider(config["URL"]["ropsten"]))
+    w3.middleware_onion.inject(geth_poa_middleware, layer=0)
+
+    print("Honored to know you want to be a part of community!!!\n")
+    print("-------------------------------------------------------")
+
+    user_private_key = str(input("Great! please enter your private key :"))
+    acc = w3.eth.account.privateKeyToAccount(user_private_key)
+
+    with open("bin/contracts/GameV2.json") as file:
+        abi = json.load(file)
+        abi = abi["abi"]
+
+    contract = w3.eth.contract(config["contract_addr"], abi=abi)
+
+    tx_dict = {
+        'from' : acc.address,
+        'nonce' : w3.eth.getTransactionCount(acc.address),
+        'value' : w3.toWei(2, 'Gwei'),
+        "gasPrice": w3.eth.gas_price,
+        #'maxFeePerGas':3000000000,
+        #'maxPriorityFeePerGas':2000000000,
+        #'gas':100000,
+    }
+
+    tx = contract.functions.registerAsUser().buildTransaction(tx_dict)
+    sign_tx = w3.eth.account.sign_transaction(tx,private_key=user_private_key)
+    tx_hash = w3.eth.send_raw_transaction(sign_tx.rawTransaction)
+    i = w3.eth.wait_for_transaction_receipt(tx_hash)
+    tx_id = w3.toHex(tx_hash)
+
+    print(f"Congrats you have been registered.")

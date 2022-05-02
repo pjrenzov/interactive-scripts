@@ -49,6 +49,7 @@ def Mint():
 
     with open(f"data/Tokens/sample.json") as file:
         sample = json.load(file)
+    
     with open(f"data/Tokens/{tokenName}.json", "w") as file:
         sample['name'] = tokenName
         sample['totalSupply'] = totalSupply
