@@ -1,1 +1,6 @@
-{"name": "Gold", "totalSupply": 1000, "ID": 2, "owner": "0x6970A5a3a188D176BB2AE6bb7CE1b4bdD40bfacA"}
+{
+    "name" : "Gold",
+    "totalSupply": 1000,
+    "ID": 2,
+    "owner":"0x6970A5a3a188D176BB2AE6bb7CE1b4bdD40bfacA"
+}
