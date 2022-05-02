@@ -28,7 +28,7 @@ def Mint():
     'from' : acc.address,
     'nonce' : w3.eth.getTransactionCount(acc.address),
     'value' : w3.toWei(2, 'Gwei'),
-    "gasPrice": w3.eth.gas_price,
+    "gasPrice": w3.eth.gas_price+w3.toWei(0.1, 'Gwei'),
     #'maxFeePerGas':3000000000,
     #'maxPriorityFeePerGas':2000000000,
     #'gas':100000,
@@ -39,13 +39,13 @@ def Mint():
         abi = abi["abi"]
 
     contract = w3.eth.contract(config["contract_addr"], abi=abi)
-
-    makeMetaData(tokenName, discription, image, str(contract.caller.currentTokenCount()))
     
     tx = contract.functions.mintClass(w3.toChecksumAddress(client_data["public_address"]),totalSupply,tokenName).buildTransaction(tx_dict)
     sign_tx = w3.eth.account.sign_transaction(tx,private_key=acc.key)
     tx_id = w3.eth.send_raw_transaction(sign_tx.rawTransaction)
     i = w3.eth.wait_for_transaction_receipt(tx_id)
+
+    makeMetaData(tokenName, discription, image, str(contract.caller.currentTokenCount()))
 
     with open(f"data/Tokens/sample.json") as file:
         sample = json.load(file)
@@ -56,8 +56,10 @@ def Mint():
         sample['ID'] = contract.caller.getCurrentTokenCount() - 1
         sample['owner'] = client_data['public_address']
         json.dump(sample, file)
-    with open(f"data/Clients/{username}.json", "a") as file:
+    with open(f"data/Clients/{username}.json", "r+") as file:
         client_data = json.load(file)
         client_data["tokens"][tokenName] = contract.caller.getCurrentTokenCount() - 1
+        file.seek(0)
         json.dump(client_data, file)
+        file.truncate()
     return
