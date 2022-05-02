@@ -1,5 +1,5 @@
 from functions.mint import Mint
-from functions.register import Register
+from functions.register import RegisterClient
 #from brownie import accounts
 
 
@@ -10,7 +10,7 @@ def main():
     print("2) Mint a Token Class")
     choice = int(input("Enter Your choice here :"))
     if choice == 1:
-        Register()
+        RegisterClient()
     else:
         Mint()
 

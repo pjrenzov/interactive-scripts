@@ -4,5 +4,5 @@
         "local-GUI" : "http://127.0.0.1:8545",
         "ropsten" : "https://ropsten.infura.io/v3/6e58cec88b6a447fb7d77bdf95a501ba" 
     },
-    "contract_addr":  "0xda92cAC39694F912adD85D8752945F4a58D3382E" 
+    "contract_addr":  "0x046bBceaE44D43C3911bB117cb65F520D80F71D3" 
 }
